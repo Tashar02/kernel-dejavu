@@ -38,6 +38,7 @@
 *.o.*
 *.patch
 *.rmeta
+*.rpm
 *.rsi
 *.s
 *.so
