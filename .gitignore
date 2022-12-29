@@ -73,7 +73,7 @@ modules.order
 #
 # RPM spec file (make rpm-pkg)
 #
-/*.spec
+# /*.spec
 
 #
 # Debian directory (make deb-pkg)
@@ -168,3 +168,6 @@ sphinx_*/
 
 # Rust analyzer configuration
 /rust-project.json
+
+# Dont ignore .tito
+!.tito/
