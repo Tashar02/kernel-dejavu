@@ -18,7 +18,7 @@ Summary: Custom Linux kernel tuned for performance
 %define _stablekver 1
 Version: %{_basekver}.%{_stablekver}
 
-%define krel 1
+%define krel 2
 
 Release: %{krel}%{?dist}
 Source0: %{name}-%{version}.tar.gz
@@ -410,8 +410,8 @@ fi
 %ghost %attr(0600, root, root) /boot/symvers-%{kverstr}.gz
 %ghost %attr(0644, root, root) /boot/config-%{kverstr}
 /boot/.vmlinuz-%{kverstr}.hmac
-%dir /lib/modules/%{kverstr}/
-%dir /lib/modules/%{kverstr}/kernel/
+%dir /lib/modules/%{kverstr}
+%dir /lib/modules/%{kverstr}/kernel || echo "skipping /lib/modules/%{kverstr}/kernel"
 /lib/modules/%{kverstr}/.vmlinuz.hmac
 /lib/modules/%{kverstr}/config
 /lib/modules/%{kverstr}/vmlinuz
@@ -444,6 +444,94 @@ fi
 %files
 
 %changelog
+* Fri Dec 30 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-2
+- fs/remap_range: avoid spurious writeback on zero length request
+  (bfoster@redhat.com)
+- xfs: remove restrictions for fsdax and reflink (ruansy.fnst@fujitsu.com)
+- fsdax,xfs: port unshare to fsdax (ruansy.fnst@fujitsu.com)
+- xfs: use dax ops for zero and truncate in fsdax mode
+  (ruansy.fnst@fujitsu.com)
+- fsdax: dedupe: iter two files at the same time (ruansy.fnst@fujitsu.com)
+- fsdax,xfs: set the shared flag when file extent is shared
+  (ruansy.fnst@fujitsu.com)
+- fsdax: zero the edges if source is HOLE or UNWRITTEN
+  (ruansy.fnst@fujitsu.com)
+- fsdax: invalidate pages when CoW (ruansy.fnst@fujitsu.com)
+- fsdax: introduce page->share for fsdax in reflink mode
+  (ruansy.fnst@fujitsu.com)
+- xfs: dquot shrinker doesn't check for XFS_DQFLAG_FREEING
+  (dchinner@redhat.com)
+- xfs: Remove duplicated include in xfs_iomap.c (yang.lee@linux.alibaba.com)
+- xfs: invalidate xfs_bufs when allocating cow extents (djwong@kernel.org)
+- xfs: get rid of assert from xfs_btree_islastblock (guoxuenan@huawei.com)
+- xfs: estimate post-merge refcounts correctly (djwong@kernel.org)
+- xfs: hoist refcount record merge predicates (djwong@kernel.org)
+- xfs: wait iclog complete before tearing down AIL (guoxuenan@huawei.com)
+- xfs: attach dquots to inode before reading data/cow fork mappings
+  (djwong@kernel.org)
+- xfs: shut up -Wuninitialized in xfsaild_push (djwong@kernel.org)
+- xfs: use memcpy, not strncpy, to format the attr prefix during listxattr
+  (djwong@kernel.org)
+- xfs: invalidate block device page cache during unmount (djwong@kernel.org)
+- xfs: add debug knob to slow down write for fun (djwong@kernel.org)
+- xfs: add debug knob to slow down writeback for fun (djwong@kernel.org)
+- xfs: drop write error injection is unfixable, remove it (dchinner@redhat.com)
+- xfs: use iomap_valid method to detect stale cached iomaps
+  (dchinner@redhat.com)
+- iomap: write iomap validity checks (dchinner@redhat.com)
+- xfs: xfs_bmap_punch_delalloc_range() should take a byte range
+  (dchinner@redhat.com)
+- iomap: buffered write failure should not truncate the page cache
+  (dchinner@redhat.com)
+- xfs,iomap: move delalloc punching to iomap (dchinner@redhat.com)
+- xfs: use byte ranges for write cleanup ranges (dchinner@redhat.com)
+- xfs: punching delalloc extents on write failure is racy (dchinner@redhat.com)
+- xfs: fix incorrect error-out in xfs_remove (djwong@kernel.org)
+- xfs: check inode core when scrubbing metadata files (djwong@kernel.org)
+- xfs: don't warn about files that are exactly s_maxbytes long
+  (djwong@kernel.org)
+- xfs: teach scrub to flag non-extents format cow forks (djwong@kernel.org)
+- xfs: check that CoW fork extents are not shared (djwong@kernel.org)
+- xfs: check quota files for unwritten extents (djwong@kernel.org)
+- xfs: block map scrub should handle incore delalloc reservations
+  (djwong@kernel.org)
+- xfs: teach scrub to check for adjacent bmaps when rmap larger than bmap
+  (djwong@kernel.org)
+- xfs: fix perag loop in xchk_bmap_check_rmaps (djwong@kernel.org)
+- xfs: online checking of the free rt extent count (djwong@kernel.org)
+- xfs: skip fscounters comparisons when the scan is incomplete
+  (djwong@kernel.org)
+- xfs: make rtbitmap ILOCKing consistent when scanning the rt bitmap file
+  (djwong@kernel.org)
+- xfs: load rtbitmap and rtsummary extent mapping btrees at mount time
+  (djwong@kernel.org)
+- xfs: don't return -EFSCORRUPTED from repair when resources cannot be grabbed
+  (djwong@kernel.org)
+- xfs: don't retry repairs harder when EAGAIN is returned (djwong@kernel.org)
+- xfs: fix return code when fatal signal encountered during dquot scrub
+  (djwong@kernel.org)
+- xfs: return EINTR when a fatal signal terminates scrub (djwong@kernel.org)
+- xfs: pivot online scrub away from kmem.[ch] (djwong@kernel.org)
+- xfs: initialize the check_owner object fully (djwong@kernel.org)
+- xfs: standardize GFP flags usage in online scrub (djwong@kernel.org)
+- xfs: make AGFL repair function avoid crosslinked blocks (djwong@kernel.org)
+- xfs: log the AGI/AGF buffers when rolling transactions during an AG repair
+  (djwong@kernel.org)
+- xfs: don't track the AGFL buffer in the scrub AG context (djwong@kernel.org)
+- xfs: fully initialize xfs_da_args in xchk_directory_blocks
+  (djwong@kernel.org)
+- xfs: write page faults in iomap are not buffered writes (dchinner@redhat.com)
+- scatterlist: Don't allocate sg lists using __get_free_page
+  (sultan@kerneltoast.com)
+- mm: Disable proactive compaction by default (sultan@kerneltoast.com)
+- mm: Don't hog the CPU and zone lock in rmqueue_bulk()
+  (sultan@kerneltoast.com)
+- mm: Lower the non-hugetlbpage pageblock size to reduce scheduling delays
+  (sultan@kerneltoast.com)
+- mm: Stop kswapd early when nothing's waiting for it to free pages
+  (sultan@kerneltoast.com)
+- mm: Disable watermark boosting by default (sultan@kerneltoast.com)
+- Bump release ver to v6.1.1-2
 * Thu Dec 29 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-1
 - Initial release (v6.1.1-1)
 
