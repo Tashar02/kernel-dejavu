@@ -444,3 +444,6 @@ fi
 %files
 
 %changelog
+* Thu Dec 29 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-1
+- Initial release (v6.1.1-1)
+
