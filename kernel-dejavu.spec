@@ -2,7 +2,7 @@
 %define _disable_source_fetch 0
 
 # See https://fedoraproject.org/wiki/Changes/SetBuildFlagsBuildCheck to why this has to be done
-%if 0%{?fedora} >= 36
+%if 0%{?fedora} >= 37
 %undefine _auto_set_build_flags
 %endif
 
@@ -18,14 +18,13 @@ Summary: Custom Linux kernel tuned for performance
 %define _stablekver 1
 Version: %{_basekver}.%{_stablekver}
 
-%define krel rc3
+%define krel 1
 
 Release: %{krel}%{?dist}
 Source0: %{name}-%{version}.tar.gz
 
 %define rpmver %{version}-%{release}
-%define krelstr %{release}.%{_arch}
-%define kverstr %{version}-Dejavu%{krelstr}
+%define kverstr %{version}-Dejavu%{release}.%{_arch}
 
 License: GPLv2 and Redistributable, no modifications permitted
 Group: System Environment/Kernel
@@ -44,7 +43,7 @@ The kernel-dejavu meta package
 %package core
 Summary: Kernel core package
 Group: System Environment/Kernel
-Provides: installonlypkg(kernel), kernel = %{rpmver}, kernel-core = %{rpmver}, kernel-core-uname-r = %{kverstr}, kernel-uname-r = %{kverstr}, kernel-%{_arch} = %{rpmver}, kernel-core-%{rpmver} = %{kverstr}, %{name}-core-%{rpmver} = %{kverstr}, kernel-drm-nouveau = 16
+Provides: installonlypkg(kernel), kernel = %{rpmver}, kernel-core = %{rpmver}, kernel-core-uname-r = %{kverstr}, kernel-uname-r = %{kverstr}, kernel-%{_arch} = %{rpmver}, kernel-core%{_isa} = %{rpmver}, kernel-core-%{rpmver} = %{kverstr}, %{name}-core-%{rpmver} = %{kverstr}, kernel-drm-nouveau = 16
 # multiver
 Provides: %{name}%{_basekver}-core = %{rpmver}
 Requires: bash, coreutils, dracut, linux-firmware, /usr/bin/kernel-install, kernel-modules-%{rpmver} = %{kverstr}
@@ -58,7 +57,7 @@ input and output, etc.
 %package modules
 Summary: Kernel modules to match the core kernel
 Group: System Environment/Kernel
-Provides: installonlypkg(kernel-module), kernel-modules = %{rpmver}, kernel-modules-uname-r = %{kverstr}, kernel-modules-%{_arch} = %{rpmver}, kernel-modules-%{rpmver} = %{kverstr}, %{name}-modules-%{rpmver} = %{kverstr}
+Provides: installonlypkg(kernel-module), kernel-modules = %{rpmver}, kernel-modules%{_isa} = %{rpmver}, kernel-modules-uname-r = %{kverstr}, kernel-modules-%{_arch} = %{rpmver}, kernel-modules-%{rpmver} = %{kverstr}, %{name}-modules-%{rpmver} = %{kverstr}
 Provides: %{name}%{_basekver}-modules = %{rpmver}
 Supplements: %{name} = %{rpmver}
 %description modules
@@ -67,7 +66,7 @@ This package provides kernel modules for the core dejavu kernel package.
 %package headers
 Summary: Header files for the Linux kernel for use by glibc
 Group: Development/System
-Provides: kernel-headers = %{kverstr}, glibc-kernheaders = 3.0-46
+Provides: kernel-headers = %{kverstr}, glibc-kernheaders = 3.0-46, kernel-headers%{_isa} = %{kverstr}
 Obsoletes: kernel-headers < %{kverstr}, glibc-kernheaders < 3.0-46
 %description headers
 Kernel-headers includes the C header files that specify the interface
@@ -83,7 +82,7 @@ AutoReqProv: no
 Requires: findutils perl-interpreter openssl-devel flex make bison elfutils-libelf-devel
 Requires: llvm lld clang wget zstd
 Enhances: dkms akmods
-Provides: installonlypkg(kernel), kernel-devel = %{rpmver}, kernel-devel-uname-r = %{kverstr}, kernel-devel-%{_arch} = %{rpmver}, kernel-devel-%{rpmver} = %{kverstr}, %{name}-devel-%{rpmver} = %{kverstr}
+Provides: installonlypkg(kernel), kernel-devel = %{rpmver}, kernel-devel-uname-r = %{kverstr}, kernel-devel-%{_arch} = %{rpmver}, kernel-devel%{_isa} = %{rpmver}, kernel-devel-%{rpmver} = %{kverstr}, %{name}-devel-%{rpmver} = %{kverstr}
 Provides: %{name}%{_basekver}-devel = %{rpmver}
 %description devel
 This package provides kernel headers and makefiles sufficient to build modules
@@ -92,7 +91,7 @@ against the dejavu kernel package.
 %package devel-matched
 Summary: Meta package to install matching core and devel packages for a given dejavu kernel
 Requires: %{name}-devel = %{rpmver}, %{name}-core = %{rpmver}
-Provides: kernel-devel-matched = %{rpmver}
+Provides: kernel-devel-matched = %{rpmver}, kernel-devel-matched%{_isa} = %{rpmver}
 %description devel-matched
 This meta package is used to install matching core and devel packages for a given dejavu kernel.
 
@@ -114,19 +113,22 @@ clang --version
 # Init fedora_defconfig
 make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" fedora_defconfig
 
+echo "kernel-str: %{kverstr}"
+echo "local-version: -Dejavu%{release}.%{_arch}"
+
 # Remove default localversion
 find . -name "localversion*" -delete
-scripts/config -u LOCALVERSION
+scripts/config --set-str LOCALVERSION "-Dejavu%{release}.%{_arch}"
 
 # Set kernel version string as build salt
 scripts/config --set-str BUILD_SALT "%{kverstr}"
 
 # Finalize the patched config
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" %{?_smp_mflags} EXTRAVERSION=-%{krelstr} oldconfig
+make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" %{?_smp_mflags} oldconfig
 
 %build
-make LLVM="$HOME/toolchains/neutron-clang/bin" EXTRAVERSION=-%{krelstr} LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" bzImage %{?_smp_mflags}
-make LLVM="$HOME/toolchains/neutron-clang/bin" EXTRAVERSION=-%{krelstr} LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" modules %{?_smp_mflags}
+make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" bzImage %{?_smp_mflags}
+make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" modules %{?_smp_mflags}
 clang -O3 ./scripts/sign-file.c -o ./scripts/sign-file -lssl -lcrypto
 
 %install
