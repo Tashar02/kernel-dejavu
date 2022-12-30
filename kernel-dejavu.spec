@@ -453,6 +453,181 @@ fi
 %files
 
 %changelog
+* Fri Dec 30 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-1
+- dejavu: Stable release (6.1.1-1) (dakkshesh5@gmail.com)
+- ext4: fix reserved cluster accounting in __es_remove_extent()
+  (yebin10@huawei.com)
+- ext4: fix inode leak in ext4_xattr_inode_create() on an error path
+  (yebin10@huawei.com)
+- ext4: allocate extended attribute value in vmalloc area (yebin10@huawei.com)
+- ext4: avoid unaccounted block allocation when expanding inode (jack@suse.cz)
+- ext4: initialize quota before expanding inode in setproject ioctl
+  (jack@suse.cz)
+- ext4: stop providing .writepage hook (jack@suse.cz)
+- mm: export buffer_migrate_folio_norefs() (jack@suse.cz)
+- ext4: switch to using write_cache_pages() for data=journal writeout
+  (jack@suse.cz)
+- jbd2: switch jbd2_submit_inode_data() to use fs-provided hook for data
+  writeout (jack@suse.cz)
+- ext4: switch to using ext4_do_writepages() for ordered data writeout
+  (jack@suse.cz)
+- ext4: move percpu_rwsem protection into ext4_writepages() (jack@suse.cz)
+- ext4: provide ext4_do_writepages() (jack@suse.cz)
+- ext4: add support for writepages calls that cannot map blocks (jack@suse.cz)
+- ext4: drop pointless IO submission from ext4_bio_write_page() (jack@suse.cz)
+- ext4: remove nr_submitted from ext4_bio_write_page() (jack@suse.cz)
+- ext4: move keep_towrite handling to ext4_bio_write_page() (jack@suse.cz)
+- ext4: handle redirtying in ext4_bio_write_page() (jack@suse.cz)
+- ext4: fix kernel BUG in 'ext4_write_inline_data_end()' (yebin10@huawei.com)
+- ext4: make ext4_mb_initialize_context return void (guoqing.jiang@linux.dev)
+- ext4: fix deadlock due to mbcache entry corruption (jack@suse.cz)
+- ext4: avoid BUG_ON when creating xattrs (jack@suse.cz)
+- fs: ext4: initialize fsdata in pagecache_write() (glider@google.com)
+- ext4: fix delayed allocation bug in ext4_clu_mapped for bigalloc + inline
+  (enwlinux@gmail.com)
+- ext4: fix uninititialized value in 'ext4_evict_inode' (yebin10@huawei.com)
+- ext4: fix corruption when online resizing a 1K bigalloc fs
+  (libaokun1@huawei.com)
+- ext4: fix corrupt backup group descriptors after online resize
+  (libaokun1@huawei.com)
+- ext4: fix bad checksum after online resize (libaokun1@huawei.com)
+- ext4: don't fail GETFSUUID when the caller provides a long buffer
+  (djwong@kernel.org)
+- ext4: dont return EINVAL from GETFSUUID when reporting UUID length
+  (djwong@kernel.org)
+- ext4: fix error code return to user-space in ext4_get_branch()
+  (lhenriques@suse.de)
+- ext4: replace kmem_cache_create with KMEM_CACHE (sunjunchao2870@gmail.com)
+- ext4: correct inconsistent error msg in nojournal mode (libaokun1@huawei.com)
+- ext4: print file system UUID on mount, remount and unmount
+  (lczerner@redhat.com)
+- ext4: init quota for 'old.inode' in 'ext4_rename' (yebin10@huawei.com)
+- ext4: simplify fast-commit CRC calculation (ebiggers@google.com)
+- ext4: fix off-by-one errors in fast-commit block filling
+  (ebiggers@google.com)
+- ext4: fix unaligned memory access in ext4_fc_reserve_space()
+  (ebiggers@google.com)
+- ext4: add missing validation of fast-commit record lengths
+  (ebiggers@google.com)
+- ext4: fix leaking uninitialized memory in fast-commit journal
+  (ebiggers@google.com)
+- ext4: don't set up encryption key during jbd2 transaction
+  (ebiggers@google.com)
+- ext4: disable fast-commit of encrypted dir operations (ebiggers@google.com)
+- ext4: fix use-after-free in ext4_orphan_cleanup (libaokun1@huawei.com)
+- ext4: don't allow journal inode to have encrypt flag (ebiggers@google.com)
+- ext4: fix undefined behavior in bit shift for ext4_check_flag_values
+  (cuigaosheng1@huawei.com)
+- ext4: fix bug_on in __es_tree_search caused by bad boot loader inode
+  (libaokun1@huawei.com)
+- ext4: add EXT4_IGET_BAD flag to prevent unexpected bad inode
+  (libaokun1@huawei.com)
+- ext4: add helper to check quota inums (libaokun1@huawei.com)
+- ext4: fix bug_on in __es_tree_search caused by bad quota inode
+  (libaokun1@huawei.com)
+- ext4: remove trailing newline from ext4_msg() message (lhenriques@suse.de)
+- jbd2: use the correct print format (cuibixuan@linux.alibaba.com)
+- ext4: split ext4_journal_start trace for debug (changfengnan@bytedance.com)
+- ext4: journal_path mount options should follow links (lczerner@redhat.com)
+- ext4: check the return value of ext4_xattr_inode_dec_ref()
+  (floridsleeves@gmail.com)
+- ext4: remove redundant variable err (cui.jinpeng2@zte.com.cn)
+- ext4: add inode table check in __ext4_get_inode_loc to aovid possible
+  infinite loop (libaokun1@huawei.com)
+- fs/ext4: replace ternary operator with min()/max() and min_t()
+  (yijiangshan@kylinos.cn)
+- ext4: check and assert if marking an no_delete evicting inode dirty
+  (yi.zhang@huawei.com)
+- ext4: silence the warning when evicting inode with dioread_nolock
+  (yi.zhang@huawei.com)
+- fsverity: simplify fsverity_get_digest() (ebiggers@google.com)
+- fsverity: stop using PG_error to track error status (ebiggers@google.com)
+- fscrypt: add additional documentation for SM4 support (ebiggers@google.com)
+- fscrypt: remove unused Speck definitions (ebiggers@google.com)
+- fscrypt: Add SM4 XTS/CTS symmetric algorithm support
+  (tianjia.zhang@linux.alibaba.com)
+- blk-crypto: Add support for SM4-XTS blk crypto mode
+  (tianjia.zhang@linux.alibaba.com)
+- fscrypt: add comment for fscrypt_valid_enc_modes_v1() (ebiggers@google.com)
+- fscrypt: pass super_block to fscrypt_put_master_key_activeref()
+  (ebiggers@google.com)
+- f2fs: reset wait_ms to default if any of the victims have been selected
+  (ssawgyw@gmail.com)
+- f2fs: fix some format WARNING in debug.c and sysfs.c (frank.li@vivo.com)
+- f2fs: don't call f2fs_issue_discard_timeout() when discard_cmd_cnt is 0 in
+  f2fs_put_super() (frank.li@vivo.com)
+- f2fs: fix iostat parameter for discard (frank.li@vivo.com)
+- f2fs: Fix spelling mistake in label: free_bio_enrty_cache ->
+  free_bio_entry_cache (colin.i.king@gmail.com)
+- f2fs: add block_age-based extent cache (jaegeuk@kernel.org)
+- f2fs: allocate the extent_cache by default (jaegeuk@kernel.org)
+- f2fs: refactor extent_cache to support for read and more (jaegeuk@kernel.org)
+- f2fs: remove unnecessary __init_extent_tree (jaegeuk@kernel.org)
+- f2fs: move internal functions into extent_cache.c (jaegeuk@kernel.org)
+- f2fs: specify extent cache for read explicitly (jaegeuk@kernel.org)
+- f2fs: introduce f2fs_is_readonly() for readability (frank.li@vivo.com)
+- f2fs: remove F2FS_SET_FEATURE() and F2FS_CLEAR_FEATURE() macro
+  (frank.li@vivo.com)
+- f2fs: do some cleanup for f2fs module init (frank.li@vivo.com)
+- MAINTAINERS: Add f2fs bug tracker link (chao@kernel.org)
+- f2fs: remove the unused flush argument to change_curseg (hch@lst.de)
+- f2fs: open code allocate_segment_by_default (hch@lst.de)
+- f2fs: remove struct segment_allocation default_salloc_ops (hch@lst.de)
+- f2fs: introduce discard_urgent_util sysfs node (frank.li@vivo.com)
+- f2fs: define MIN_DISCARD_GRANULARITY macro (frank.li@vivo.com)
+- f2fs: init discard policy after thread wakeup (frank.li@vivo.com)
+- f2fs: avoid victim selection from previous victim section
+  (yonggil.song@samsung.com)
+- f2fs: truncate blocks in batch in __complete_revoke_list() (chao@kernel.org)
+- f2fs: make __queue_discard_cmd() return void (frank.li@vivo.com)
+- f2fs: fix description about discard_granularity node (frank.li@vivo.com)
+- f2fs: move set_file_temperature into f2fs_new_inode (shengyong@oppo.com)
+- f2fs: fix to enable compress for newly created file if extension matches
+  (shengyong@oppo.com)
+- f2fs: set zstd compress level correctly (shengyong@oppo.com)
+- f2fs: change type for 'sbi->readdir_ra' (ssawgyw@gmail.com)
+- f2fs: cleanup for 'f2fs_tuning_parameters' function (ssawgyw@gmail.com)
+- f2fs: fix to alloc_mode changed after remount on a small volume device
+  (ssawgyw@gmail.com)
+- f2fs: remove submit label in __submit_discard_cmd() (frank.li@vivo.com)
+- f2fs: fix to do sanity check on i_extra_isize in is_alive() (chao@kernel.org)
+- f2fs: introduce F2FS_IOC_START_ATOMIC_REPLACE (daehojeong@google.com)
+- f2fs: fix to set flush_merge opt and show noflush_merge (frank.li@vivo.com)
+- f2fs: initialize locks earlier in f2fs_fill_super() (penguin-
+  kernel@I-love.SAKURA.ne.jp)
+- f2fs: optimize iteration over sparse directories (chao@kernel.org)
+- f2fs: fix to avoid accessing uninitialized spinlock (chao@kernel.org)
+- f2fs: correct i_size change for atomic writes (daehojeong@google.com)
+- f2fs: add proc entry to show discard_plist info (frank.li@vivo.com)
+- f2fs: allow to read node block after shutdown (jaegeuk@kernel.org)
+- f2fs: replace ternary operator with max() (wangkailong@jari.cn)
+- f2fs: replace gc_urgent_high_remaining with gc_remaining_trials
+  (frank.li@vivo.com)
+- f2fs: add missing bracket in doc (jaegeuk@kernel.org)
+- f2fs: use sysfs_emit instead of sprintf (jaegeuk@kernel.org)
+- f2fs: introduce gc_mode sysfs node (frank.li@vivo.com)
+- f2fs: fix to destroy sbi->post_read_wq in error path of f2fs_fill_super()
+  (chao@kernel.org)
+- f2fs: fix return val in f2fs_start_ckpt_thread() (frank.li@vivo.com)
+- f2fs: fix the msg data type (quic_mojha@quicinc.com)
+- f2fs: fix the assign logic of iocb (quic_mojha@quicinc.com)
+- f2fs: Fix typo in comments (keosung.park@samsung.com)
+- f2fs: introduce max_ordered_discard sysfs node (frank.li@vivo.com)
+- f2fs: allow to set compression for inlined file (jaegeuk@kernel.org)
+- f2fs: add barrier mount option (frank.li@vivo.com)
+- f2fs: fix normal discard process (zhangdongdong1@oppo.com)
+- f2fs: cleanup in f2fs_create_flush_cmd_control() (frank.li@vivo.com)
+- f2fs: fix gc mode when gc_urgent_high_remaining is 1 (frank.li@vivo.com)
+- f2fs: remove batched_trim_sections node (frank.li@vivo.com)
+- f2fs: support fault injection for f2fs_is_valid_blkaddr() (chao@kernel.org)
+- f2fs: fix to invalidate dcc->f2fs_issue_discard in error path
+  (chao@kernel.org)
+- f2fs: Fix the race condition of resize flag between resizefs
+  (zhangqilong3@huawei.com)
+- f2fs: let's avoid to get cp_rwsem twice by f2fs_evict_inode by d_invalidate
+  (jaegeuk@kernel.org)
+- f2fs: should put a page when checking the summary info (pavel@denx.de)
+
 * Fri Dec 30 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-rc3
 - dejavu: rc3 (dakkshesh5@gmail.com)
 - buildtar: fix tarballs with EFI_ZBOOT enabled (vkabatov@redhat.com)
