@@ -451,6 +451,72 @@ fi
 %files
 
 %changelog
+* Fri Dec 30 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-rc3
+- dejavu: rc3 (dakkshesh5@gmail.com)
+- buildtar: fix tarballs with EFI_ZBOOT enabled (vkabatov@redhat.com)
+- modpost: Include '.text.*' in TEXT_SECTIONS (nathan@kernel.org)
+- padata: Mark padata_work_init() as __ref (nathan@kernel.org)
+- kbuild: ensure Make >= 3.82 is used (masahiroy@kernel.org)
+- kbuild: refactor the prerequisites of the modpost rule (masahiroy@kernel.org)
+- kbuild: change module.order to list *.o instead of *.ko
+  (masahiroy@kernel.org)
+- kbuild: use .NOTINTERMEDIATE for future GNU Make versions
+  (masahiroy@kernel.org)
+- kconfig: refactor Makefile to reduce process forks (masahiroy@kernel.org)
+- kbuild: add read-file macro (masahiroy@kernel.org)
+- kbuild: do not sort after reading modules.order (masahiroy@kernel.org)
+- kbuild: add test-{ge,gt,le,lt} macros (masahiroy@kernel.org)
+- Documentation: raise minimum supported version of binutils to 2.25
+  (masahiroy@kernel.org)
+- kbuild: add -Wundef to KBUILD_CPPFLAGS for W=1 builds (masahiroy@kernel.org)
+- kbuild: move -Werror from KBUILD_CFLAGS to KBUILD_CPPFLAGS
+  (masahiroy@kernel.org)
+- kbuild: Port silent mode detection to future gnu make.
+  (dgoncharov@users.sf.net)
+- init/version.c: remove #include <generated/utsrelease.h>
+  (linux@weissschuh.net)
+- firmware_loader: remove #include <generated/utsrelease.h>
+  (linux@weissschuh.net)
+- modpost: Mark uuid_le type to be suitable only for MEI
+  (andriy.shevchenko@linux.intel.com)
+- kbuild: add ability to make source rpm buildable using koji
+  (ivecera@redhat.com)
+- kbuild: warn objects shared among multiple modules (masahiroy@kernel.org)
+- kbuild: add kbuild-file macro (masahiroy@kernel.org)
+- kbuild: deb-pkg: get rid of |flex:native workaround from Build-Depends
+  (masahiroy@kernel.org)
+- scripts/jobserver-exec: parse the last --jobserver-auth= option
+  (masahiroy@kernel.org)
+- kconfig: remove redundant (void *) cast in search_conf()
+  (masahiroy@kernel.org)
+- kconfig: remove const qualifier from str_get() (masahiroy@kernel.org)
+- kconfig: remove unneeded variable in get_prompt_str() (masahiroy@kernel.org)
+- modpost: fix array_size.cocci warning (wangkailong@jari.cn)
+- Makefile.debug: support for -gz=zstd (ndesaulniers@google.com)
+- modpost: Join broken long printed messages (geert+renesas@glider.be)
+- pstore: Properly assign mem_type property (luca@osomprivacy.com)
+- pstore: Make sure CONFIG_PSTORE_PMSG selects CONFIG_RT_MUTEXES
+  (jstultz@google.com)
+- pstore: Switch pmsg_lock to an rt_mutex to avoid priority inversion
+  (jstultz@google.com)
+- pstore: Avoid kcore oops by vmap()ing with VM_IOREMAP (swboyd@chromium.org)
+- pstore/ram: Fix error return code in ramoops_probe() (wangyufen@huawei.com)
+- pstore: Alert on backend write error (gpiccoli@igalia.com)
+- MAINTAINERS: Update pstore maintainers (keescook@chromium.org)
+- pstore/ram: Set freed addresses to NULL (keescook@chromium.org)
+- pstore/ram: Move internal definitions out of kernel-wide include
+  (keescook@chromium.org)
+- pstore/ram: Move pmsg init earlier (keescook@chromium.org)
+- pstore/ram: Consolidate kfree() paths (keescook@chromium.org)
+- efi: pstore: Follow convention for the efi-pstore backend name
+  (gpiccoli@igalia.com)
+- pstore: Inform unregistered backend names as well (gpiccoli@igalia.com)
+- pstore: Expose kmsg_bytes as a module parameter (gpiccoli@igalia.com)
+- pstore: Improve error reporting in case of backend overlap
+  (gpiccoli@igalia.com)
+- pstore/zone: Use GFP_ATOMIC to allocate zone buffer (hqjagain@gmail.com)
+- x86/configs: fedora: Make XFS driver built-in (dakkshesh5@gmail.com)
+
 * Fri Dec 30 2022 Dakkshesh <dakkshesh5@gmail.com> 6.1.1-2
 - fs/remap_range: avoid spurious writeback on zero length request
   (bfoster@redhat.com)
