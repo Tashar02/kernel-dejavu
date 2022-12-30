@@ -18,14 +18,14 @@ Summary: Custom Linux kernel tuned for performance
 %define _stablekver 1
 Version: %{_basekver}.%{_stablekver}
 
-%define krel 2
+%define krel rc3
 
 Release: %{krel}%{?dist}
 Source0: %{name}-%{version}.tar.gz
 
 %define rpmver %{version}-%{release}
 %define krelstr %{release}.%{_arch}
-%define kverstr %{version}-%{krelstr}
+%define kverstr %{version}-Dejavu%{krelstr}
 
 License: GPLv2 and Redistributable, no modifications permitted
 Group: System Environment/Kernel
@@ -110,16 +110,23 @@ fi
 cd $cdir || cd -
 PATH="$HOME/toolchains/neutron-clang/bin:$PATH"
 clang --version
+
 # Init fedora_defconfig
 make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" fedora_defconfig
+
+# Remove default localversion
+find . -name "localversion*" -delete
+scripts/config -u LOCALVERSION
+
 # Set kernel version string as build salt
 scripts/config --set-str BUILD_SALT "%{kverstr}"
+
 # Finalize the patched config
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" %{?_smp_mflags} oldconfig
+make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" %{?_smp_mflags} EXTRAVERSION=-%{krelstr} oldconfig
 
 %build
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" bzImage %{?_smp_mflags}
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" modules %{?_smp_mflags}
+make LLVM="$HOME/toolchains/neutron-clang/bin" EXTRAVERSION=-%{krelstr} LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" bzImage %{?_smp_mflags}
+make LLVM="$HOME/toolchains/neutron-clang/bin" EXTRAVERSION=-%{krelstr} LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" modules %{?_smp_mflags}
 clang -O3 ./scripts/sign-file.c -o ./scripts/sign-file -lssl -lcrypto
 
 %install
@@ -411,7 +418,7 @@ fi
 %ghost %attr(0644, root, root) /boot/config-%{kverstr}
 /boot/.vmlinuz-%{kverstr}.hmac
 %dir /lib/modules/%{kverstr}
-%dir /lib/modules/%{kverstr}/kernel || echo "skipping /lib/modules/%{kverstr}/kernel"
+%dir /lib/modules/%{kverstr}/kernel
 /lib/modules/%{kverstr}/.vmlinuz.hmac
 /lib/modules/%{kverstr}/config
 /lib/modules/%{kverstr}/vmlinuz
