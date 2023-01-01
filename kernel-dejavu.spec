@@ -114,6 +114,8 @@ TC_PATH="$HOME/toolchains/neutron-clang/bin"
 clang --version
 $TC_PATH/clang --version
 
+export KBUILD_BUILD_USER="dakkshesh07"
+
 # Init fedora_defconfig
 make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" fedora_defconfig
 
