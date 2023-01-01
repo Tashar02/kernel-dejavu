@@ -15,7 +15,7 @@ Name: kernel-dejavu
 Summary: Custom Linux kernel tuned for performance
 
 %define _basekver 6.1
-%define _stablekver 1
+%define _stablekver 2
 Version: %{_basekver}.%{_stablekver}
 
 %define krel 1
