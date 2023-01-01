@@ -107,8 +107,9 @@ then
   bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S > /dev/null
 fi
 cd $cdir || cd -
-PATH="$HOME/toolchains/neutron-clang/bin:$PATH"
-TC_PATH="$HOME/toolchains/neutron-clang/bin"
+
+export TC_PATH="$HOME/toolchains/neutron-clang/bin"
+export PATH="$TC_PATH:$PATH"
 
 # Verify clang version
 clang --version
@@ -133,11 +134,16 @@ scripts/config --set-str BUILD_SALT "%{kverstr}"
 make LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" %{?_smp_mflags} oldconfig
 
 %build
+export TC_PATH="$HOME/toolchains/neutron-clang/bin"
+export PATH="$TC_PATH:$PATH"
+
 make LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" bzImage %{?_smp_mflags}
 make LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" modules %{?_smp_mflags}
 clang -O3 ./scripts/sign-file.c -o ./scripts/sign-file -lssl -lcrypto
 
 %install
+export TC_PATH="$HOME/toolchains/neutron-clang/bin"
+export PATH="$TC_PATH:$PATH"
 
 ImageName=$(make image_name | tail -n 1)
 
