@@ -108,7 +108,11 @@ then
 fi
 cd $cdir || cd -
 PATH="$HOME/toolchains/neutron-clang/bin:$PATH"
+TC_PATH="$HOME/toolchains/neutron-clang/bin"
+
+# Verify clang version
 clang --version
+$TC_PATH/clang --version
 
 # Init fedora_defconfig
 make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" fedora_defconfig
@@ -124,11 +128,11 @@ scripts/config --set-str LOCALVERSION "-Dejavu%{release}.%{_arch}"
 scripts/config --set-str BUILD_SALT "%{kverstr}"
 
 # Finalize the patched config
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" %{?_smp_mflags} oldconfig
+make LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" %{?_smp_mflags} oldconfig
 
 %build
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" bzImage %{?_smp_mflags}
-make LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" modules %{?_smp_mflags}
+make LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" bzImage %{?_smp_mflags}
+make LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" modules %{?_smp_mflags}
 clang -O3 ./scripts/sign-file.c -o ./scripts/sign-file -lssl -lcrypto
 
 %install
@@ -140,8 +144,8 @@ mkdir -p %{buildroot}/boot
 cp -v $ImageName %{buildroot}/boot/vmlinuz-%{kverstr}
 chmod 755 %{buildroot}/boot/vmlinuz-%{kverstr}
 
-make %{?_smp_mflags} LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" INSTALL_MOD_PATH=%{buildroot} modules_install mod-fw=
-make %{?_smp_mflags} LLVM="$HOME/toolchains/neutron-clang/bin" LLVM_IAS=1 LD="$HOME/toolchains/neutron-clang/bin/ld.lld" INSTALL_HDR_PATH=%{buildroot}/usr headers_install
+make %{?_smp_mflags} LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" INSTALL_MOD_PATH=%{buildroot} modules_install mod-fw=
+make %{?_smp_mflags} LLVM=1 LLVM_IAS=1 CC="$TC_PATH/clang" LD="$TC_PATH/ld.lld" AR="$TC_PATH/llvm-ar" NM="$TC_PATH/llvm-nm" OBJCOPY="$TC_PATH/llvm-objcopy" OBJDUMP="$TC_PATH/llvm-objdump" READELF="$TC_PATH/llvm-readelf" STRIP="$TC_PATH/llvm-strip" HOSTCC="$TC_PATH/clang" HOSTCXX="$TC_PATH/clang++" HOSTAR="$TC_PATH/llvm-ar" HOSTLD="$TC_PATH/ld.lld" INSTALL_HDR_PATH=%{buildroot}/usr headers_install
 
 # prepare -devel files
 ### all of the things here are derived from the Fedora kernel.spec
