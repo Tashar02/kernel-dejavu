@@ -3,7 +3,7 @@
 # Maintainer: Tashfin Shakeer Rhythm (Tashar02) <tashfinshakeerrhythm@gmail.com>
 
 pkgbase=linux-dejavu
-pkgver=6.1.2-dejavu1
+pkgver=6.1.2.dejavu1
 pkgrel=1
 pkgdesc='Linux'
 _srctag=v${pkgver%.*}-${pkgver##*.}
