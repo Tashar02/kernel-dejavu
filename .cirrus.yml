@@ -13,7 +13,7 @@ task:
       memory: 32G
 
   setup_env_script:
-      - pacman -Sy --needed --noconfirm github-cli kmod
+      - pacman -Sy --needed --noconfirm github-cli kmod pahole xmlto python-sphinx python-sphinx_rtd_theme graphviz imagemagick
       - gh auth login --with-token <<< "$GH_AUTH"
       - sed -i '/E_ROOT/d' /usr/bin/makepkg
       - sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
