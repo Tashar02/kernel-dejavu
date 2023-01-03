@@ -1,0 +1,30 @@
+env:
+    TOKEN: "ENCRYPTED[!e90ca03393e10b95234f9c2cda8221e429b7d58614ea6309e24348829d511345d957225ef54b307ee940dbf32d841aae!]"
+    CHATID: "ENCRYPTED[!670b4b84f0905acbe6345def97e7e24bf9f05d7960d5d6dd095fbc41a190811322813ecc8233b99c8dc74852df6e8a5f!]"
+    GH_AUTH: "ENCRYPTED[!7eb4c586681d3e690183456a1aa00e0bcc15520911e640bff3c1c32c9b682352d616ee5a9086934b6cf06befea50db2f!]"
+    CIRRUS_CLONE_DEPTH: "1"
+
+task:
+  name: "Dejavu-Kernel-Builder"
+  trigger_type: manual
+  timeout_in: 2h
+  container:
+      image: panchajanya1999/archlinux:latest
+      cpu: 8
+      memory: 32G
+
+  setup_env_script:
+      - curl -fsSL "https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static" -o pacman-static && chmod +x pacman-static && mv pacman-static /usr/bin/
+      - pacman-static -Syu --needed --noconfirm github-cli kmod dos2unix
+      - gh auth login --with-token <<< "$GH_AUTH"
+      - sed -i '/E_ROOT/d' /usr/bin/makepkg
+      - sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
+      - echo 'COMPRESSZST+=(--threads=0)' >> /etc/makepkg.conf
+
+  build_script:
+      - ln -fs /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && date
+      - locale-gen en_US en_US.UTF-8
+      - makepkg -s && wget https://katb.in/ufeyiqamodo/raw -O push.sh && dos2unix push.sh && bash push.sh
+
+  artifacts:
+      path: "*.pkg.tar.zst"
