@@ -18,6 +18,8 @@ options=('!strip')
 
 export KBUILD_BUILD_HOST=cirrus
 export KBUILD_BUILD_USER=Tashar02
+export TC="$(pwd)/neutron-clang/bin"
+export PATH="$TC:${PATH}"
 
 FLAGS=(
 	LLVM=1
@@ -40,17 +42,6 @@ FLAGS=(
 prepare() {
 	cd ..
 
-	cdir=$(pwd)
-	if test ! -d "toolchains/clang"; then
-		mkdir -p "toolchains/clang"
-		cd "toolchains/clang"
-		bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S >/dev/null
-	fi
-	cd $cdir || cd -
-
-	export TC="$cdir/../toolchains/clang/bin"
-	export PATH="$TC:${PATH}"
-
 	echo "Setting config..."
 
 	make ${FLAGS[@]} arch_defconfig
@@ -60,9 +51,6 @@ prepare() {
 }
 
 build() {
-	export TC="$cdir/../toolchains/clang/bin"
-	export PATH="$TC:${PATH}"
-
 	cd ..
 
 	if ! command -v ccache &>/dev/null; then
