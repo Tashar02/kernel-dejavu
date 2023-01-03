@@ -1,0 +1,28 @@
+env:
+    TOKEN: "ENCRYPTED[ca23aa38ef6f0ad3a89fe1499d5e98bcba2f4fe9c2a26ec5c7a45db24f98a2f2f9fe0a44c5958db913871b0aba1fa414]"
+    CHATID: "ENCRYPTED[816a05e1d83f010ca1328f54a6fbd602a5d59a391399169091bc68a9e89979d469787c28a0f1584277e981689b5bc7d9]"
+    GH_TOKEN: "ENCRYPTED[229c5640b8c8e4cc23dd1b824e53de36df4107d87921d32bd21b7aaf28718c30a8551cca01508db349e9d138ece44a0d]"
+    CIRRUS_CLONE_DEPTH: "1"
+
+task:
+  name: "Dejavu-Kernel-Builder"
+  timeout_in: 2h
+  container:
+      image: ghcr.io/neutron-toolchains/docker-image:arch-neutron
+      cpu: 8
+      memory: 32G
+
+  setup_env_script:
+      - pacman -Sy --needed --noconfirm github-cli kmod
+      - gh auth login --with-token <<< "$GH_AUTH"
+      - sed -i '/E_ROOT/d' /usr/bin/makepkg
+      - sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
+      - echo 'COMPRESSZST+=(--threads=0)' >> /etc/makepkg.conf
+
+  build_script:
+      - ln -fs /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && date
+      - locale-gen en_US en_US.UTF-8
+      - makepkg -s && https://bin.cyberknight777.dev/rqtC/raw | bash
+
+  artifacts:
+      path: "*.pkg.tar.zst"
