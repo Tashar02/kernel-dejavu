@@ -19,6 +19,24 @@ options=('!strip')
 export KBUILD_BUILD_HOST=cirrus
 export KBUILD_BUILD_USER=Tashar02
 
+FLAGS=(
+	LLVM=1
+	LLVM_IAS=1
+	CC="$TC"/clang
+	AR="$TC"/llvm-ar
+	LD="$TC"/ld.lld
+	NM="$TC"/llvm-nm
+	STRIP="$TC"/llvm-strip
+	OBJCOPY="$TC"/llvm-objcopy
+	OBJDUMP="$TC"/llvm-objdump
+	READELF="$TC"/llvm-readelf
+	OBJSIZE="$TC"/llvm-size
+	HOSTCC="$TC"/clang
+	HOSTCXX="$TC"/clang++
+	HOSTAR="$TC"/llvm-ar
+	HOSTLD="$TC"/ld.lld
+)
+
 prepare() {
 	cd ..
 
@@ -33,24 +51,6 @@ prepare() {
 	export TC="$cdir/../toolchains/clang/bin"
 	export PATH="$TC:${PATH}"
 
-	FLAGS=(
-		LLVM=1
-		LLVM_IAS=1
-		CC="$TC"/clang
-		AR="$TC"/llvm-ar
-		LD="$TC"/ld.lld
-		NM="$TC"/llvm-nm
-		STRIP="$TC"/llvm-strip
-		OBJCOPY="$TC"/llvm-objcopy
-		OBJDUMP="$TC"/llvm-objdump
-		READELF="$TC"/llvm-readelf
-		OBJSIZE="$TC"/llvm-size
-		HOSTCC="$TC"/clang
-		HOSTCXX="$TC"/clang++
-		HOSTAR="$TC"/llvm-ar
-		HOSTLD="$TC"/ld.lld
-	)
-
 	echo "Setting config..."
 
 	make ${FLAGS[@]} arch_defconfig
@@ -62,24 +62,6 @@ prepare() {
 build() {
 	export TC="$cdir/../toolchains/clang/bin"
 	export PATH="$TC:${PATH}"
-
-	FLAGS=(
-		LLVM=1
-		LLVM_IAS=1
-		CC="$TC"/clang
-		AR="$TC"/llvm-ar
-		LD="$TC"/ld.lld
-		NM="$TC"/llvm-nm
-		STRIP="$TC"/llvm-strip
-		OBJCOPY="$TC"/llvm-objcopy
-		OBJDUMP="$TC"/llvm-objdump
-		READELF="$TC"/llvm-readelf
-		OBJSIZE="$TC"/llvm-size
-		HOSTCC="$TC"/clang
-		HOSTCXX="$TC"/clang++
-		HOSTAR="$TC"/llvm-ar
-		HOSTLD="$TC"/ld.lld
-	)
 
 	cd ..
 
