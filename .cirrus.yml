@@ -8,12 +8,13 @@ task:
   name: "Dejavu-Kernel-Builder"
   timeout_in: 2h
   container:
-      image: ghcr.io/neutron-toolchains/docker-image:arch-neutron
+      image: panchajanya1999/archlinux:latest
       cpu: 8
       memory: 32G
 
   setup_env_script:
-      - pacman -Sy --needed --noconfirm github-cli kmod pahole xmlto python-sphinx python-sphinx_rtd_theme graphviz imagemagick
+      - curl -fsSL "https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static" -o pacman-static && chmod +x pacman-static && mv pacman-static /usr/bin/
+      - pacman-static -Syu --needed --noconfirm github-cli kmod
       - gh auth login --with-token <<< "$GH_AUTH"
       - sed -i '/E_ROOT/d' /usr/bin/makepkg
       - sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
