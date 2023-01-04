@@ -465,6 +465,116 @@ fi
 %files
 
 %changelog
+* Wed Jan 04 2023 Dakkshesh <dakkshesh5@gmail.com> 6.1.3-1
+- dejavu: 6.1.3 (dakkshesh5@gmail.com)
+- x86/configs: fedora: Regenerate (dakkshesh5@gmail.com)
+- Linux 6.1.3 (gregkh@linuxfoundation.org)
+- kcsan: Instrument memcpy/memset/memmove with newer Clang (elver@google.com)
+- SUNRPC: Don't leak netobj memory when gss_read_proxy_verf() fails
+  (chuck.lever@oracle.com)
+- tpm: tpm_tis: Add the missed acpi_put_table() to fix memory leak
+  (guohanjun@huawei.com)
+- tpm: tpm_crb: Add the missed acpi_put_table() to fix memory leak
+  (guohanjun@huawei.com)
+- tpm: acpi: Call acpi_put_table() to fix memory leak (guohanjun@huawei.com)
+- mmc: vub300: fix warning - do not call blocking ops when !TASK_RUNNING
+  (deren.wu@mediatek.com)
+- block: Do not reread partition table on exclusively open device
+  (jack@suse.cz)
+- f2fs: allow to read node block after shutdown (jaegeuk@kernel.org)
+- f2fs: should put a page when checking the summary info (pavel@denx.de)
+- mm, compaction: fix fast_isolate_around() to stay within boundaries
+  (a.naribayashi@fujitsu.com)
+- md: fix a crash in mempool_free (mpatocka@redhat.com)
+- mfd: mt6360: Add bounds checking in Regmap read/write call-backs
+  (cy_huang@richtek.com)
+- pnode: terminate at peers of source (brauner@kernel.org)
+- ALSA: hda/hdmi: Static PCM mapping again with AMD HDMI codecs (tiwai@suse.de)
+- ALSA: line6: fix stack overflow in line6_midi_transmit (arteme@gmail.com)
+- ALSA: line6: correct midi status byte when receiving data from podxt
+  (arteme@gmail.com)
+- ovl: update ->f_iocb_flags when ovl_change_flags() modifies ->f_flags
+  (viro@zeniv.linux.org.uk)
+- ovl: Use ovl mounter's fsuid and fsgid in ovl_link()
+  (zhangtianci.1997@bytedance.com)
+- binfmt: Fix error return code in load_elf_fdpic_binary()
+  (wangyufen@huawei.com)
+- ACPI: x86: s2idle: Stop using AMD specific codepath for Rembrandt+
+  (mario.limonciello@amd.com)
+- ACPI: x86: s2idle: Force AMD GUID/_REV 2 on HP Elitebook 865
+  (mario.limonciello@amd.com)
+- hfsplus: fix bug causing custom uid and gid being unable to be assigned with
+  mount (gargaditya08@live.com)
+- pstore/zone: Use GFP_ATOMIC to allocate zone buffer (hqjagain@gmail.com)
+- pstore: Properly assign mem_type property (luca@osomprivacy.com)
+- kmsan: include linux/vmalloc.h (arnd@arndb.de)
+- kmsan: export kmsan_handle_urb (arnd@arndb.de)
+- mm/mempolicy: fix memory leak in set_mempolicy_home_node system call
+  (mathieu.desnoyers@efficios.com)
+- mm, mremap: fix mremap() expanding vma with addr inside vma (vbabka@suse.cz)
+- rtmutex: Add acquire semantics for rtmutex lock acquisition slow path
+  (mgorman@techsingularity.net)
+- futex: Fix futex_waitv() hrtimer debug object leak on kcalloc error
+  (mathieu.desnoyers@efficios.com)
+- HID: plantronics: Additional PIDs for double volume key presses quirk
+  (linuxhid@cosmicgizmosystems.com)
+- HID: multitouch: fix Asus ExpertBook P2 P2451FA trackpoint
+  (jose.exposito89@gmail.com)
+- kprobes: kretprobe events missing on 2-core KVM guest
+  (wuqiang.matt@bytedance.com)
+- NFSD: fix use-after-free in __nfs42_ssc_open() (dai.ngo@oracle.com)
+- rtc: msc313: Fix function prototype mismatch in msc313_rtc_probe()
+  (keescook@chromium.org)
+- powerpc/rtas: avoid scheduling in rtas_os_term() (nathanl@linux.ibm.com)
+- powerpc/rtas: avoid device tree lookups in rtas_os_term()
+  (nathanl@linux.ibm.com)
+- iommu/mediatek: Fix crash on isr after kexec() (ribalda@chromium.org)
+- objtool: Fix SEGFAULT (christophe.leroy@csgroup.eu)
+- fs/ntfs3: Fix slab-out-of-bounds in r_page (yinxiujiang@kylinos.cn)
+- fs/ntfs3: Delete duplicate condition in ntfs_read_mft()
+  (dan.carpenter@oracle.com)
+- fs/ntfs3: Use __GFP_NOWARN allocation at ntfs_fill_super() (penguin-
+  kernel@I-love.SAKURA.ne.jp)
+- fs/ntfs3: Use __GFP_NOWARN allocation at wnd_init() (penguin-
+  kernel@I-love.SAKURA.ne.jp)
+- fs/ntfs3: Validate index root when initialize NTFS security
+  (edward.lo@ambergroup.io)
+- phy: sun4i-usb: Add support for the H616 USB PHY (andre.przywara@arm.com)
+- phy: sun4i-usb: Introduce port2 SIDDQ quirk (andre.przywara@arm.com)
+- soundwire: dmi-quirks: add quirk variant for LAPBC710 NUC15 (pierre-
+  louis.bossart@linux.intel.com)
+- fs/ntfs3: Fix slab-out-of-bounds read in run_unpack (yin31149@gmail.com)
+- fs/ntfs3: Validate resident attribute name (edward.lo@ambergroup.io)
+- fs/ntfs3: Validate buffer length while parsing index
+  (edward.lo@ambergroup.io)
+- fs/ntfs3: Validate attribute name offset (edward.lo@ambergroup.io)
+- fs/ntfs3: Add null pointer check for inode operations
+  (edward.lo@ambergroup.io)
+- fs/ntfs3: Fix memory leak on ntfs_fill_super() error path
+  (syoshida@redhat.com)
+- fs/ntfs3: Add null pointer check to attr_load_runs_vcn
+  (edward.lo@ambergroup.io)
+- fs/ntfs3: Validate data run offset (edward.lo@ambergroup.io)
+- fs/ntfs3: Add overflow check for attribute size (edward.lo@ambergroup.io)
+- fs/ntfs3: Validate BOOT record_size (edward.lo@ambergroup.io)
+- nvmet: don't defer passthrough commands with trivial effects to the workqueue
+  (hch@lst.de)
+- nvme: fix the NVME_CMD_EFFECTS_CSE_MASK definition (hch@lst.de)
+- ata: ahci: Fix PCS quirk application for suspend (grozzly@protonmail.com)
+- block, bfq: fix uaf for bfqq in bfq_exit_icq_bfqq (yukuai3@huawei.com)
+- ACPI: video: Fix Apple GMUX backlight detection (hdegoede@redhat.com)
+- ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
+  (hdegoede@redhat.com)
+- ACPI: resource: do IRQ override on Lenovo 14ALC7 (adrian@freund.io)
+- ACPI: resource: do IRQ override on XMG Core 15 (ofenfisch@googlemail.com)
+- nvme-pci: fix page size checks (kbusch@kernel.org)
+- nvme-pci: fix mempool alloc size (kbusch@kernel.org)
+- nvme-pci: fix doorbell buffer value endianness (k.jensen@samsung.com)
+- io_uring: pass in EPOLL_URING_WAKE for eventfd signaling and wakeups
+  (axboe@kernel.dk)
+- eventfd: provide a eventfd_signal_mask() helper (axboe@kernel.dk)
+- eventpoll: add EPOLL_URING_WAKE poll wakeup flag (axboe@kernel.dk)
+
 * Sun Jan 01 2023 Dakkshesh <dakkshesh5@gmail.com> 6.1.2-1
 - dejavu: 6.1.2-1 (dakkshesh5@gmail.com)
 - sched: Introduce per-memory-map concurrency ID (admin@ptr1337.dev)
