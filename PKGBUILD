@@ -38,17 +38,16 @@ FLAGS=(
 )
 
 prepare() {
-	cd ..
-
-	cdir=$(pwd)
-	if test ! -d "$cdir/neutron-clang"; then
-		mkdir -p "$cdir/neutron-clang"
-		cd "$cdir/neutron-clang"
-		bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S >/dev/null
+	if test ! -d "neutron-clang"; then
+		mkdir -p "neutron-clang"
+		cd "neutron-clang"
+		bash <(curl -s "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman") -S
+		cd ../..
+	else
+		cd ..
 	fi
-	cd $cdir || cd -
 
-	export TC="$cdir/neutron-clang/bin"
+	export TC="$(pwd)/neutron-clang/bin"
 	export PATH="$TC:${PATH}"
 
 	echo "Setting config..."
