@@ -14,7 +14,7 @@ task:
 
   setup_env_script:
       - curl -fsSL "https://pkgbuild.com/~morganamilo/pacman-static/x86_64/bin/pacman-static" -o pacman-static && chmod +x pacman-static && mv pacman-static /usr/bin/
-      - pacman-static -Syu --needed --noconfirm github-cli kmod
+      - pacman-static -Syu --needed --noconfirm github-cli kmod dos2unix
       - gh auth login --with-token <<< "$GH_AUTH"
       - sed -i '/E_ROOT/d' /usr/bin/makepkg
       - sed -i "s/PKGEXT='.pkg.tar.xz'/PKGEXT='.pkg.tar.zst'/" /etc/makepkg.conf
@@ -24,7 +24,7 @@ task:
   build_script:
       - ln -fs /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && date
       - locale-gen en_US en_US.UTF-8
-      - makepkg -s && curl -s https://katb.in/eruvumefadi/raw | bash
+      - makepkg -s && wget https://katb.in/ufeyiqamodo/raw -O push.sh && dos2unix push.sh && bash push.sh
 
   artifacts:
       path: "*.pkg.tar.zst"
